@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Table Multiplication</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        td {
+            width: 100px;
+            text-align: center;
+            border: 1px solid black;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <form id="inputForm">
+        Input1: <input type="text" name="input1" value="3#3#3"><br><br>
+        Input2: <input type="text" name="input2" value="3#3#4"><br><br>
+        <button>Submit</button>
+    </form>
+    <hr>
+    <table id="table1"></table><hr>
+    <table id="table2"></table><hr>
+    <table id="table3"></table>
+
+    <script>
+        const form = document.getElementById("inputForm");
+
+        function createTable(input) {
+            const [rows, cols, start] = input.map(Number);
+            const table = [];
+
+            for (let i = 0; i < rows; i++) {
+                const row = [];
+                for (let j = 0; j < cols; j++) {
+                    row.push((i + 1) * (start + j));
+                }
+                table.push(row);
+            }
+            return table;
+        }
+
+        function multiplyTables(table1, table2) {
+            return table1.map((row, rowIndex) =>
+                row.map((cell, colIndex) =>
+                    cell !== table2[rowIndex][colIndex] ? cell * table2[rowIndex][colIndex] : cell
+                )
+            );
+        }
+
+        function displayTable(table, id) {
+            const tableOutput = document.getElementById(id);
+            tableOutput.innerHTML = table.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('');
+        }
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const input1 = form.input1.value.split("#");
+            const input2 = form.input2.value.split("#");
+
+            const table1 = createTable(input1);
+            const table2 = createTable(input2);
+            const table3 = multiplyTables(table1, table2);
+
+            displayTable(table1, "table1");
+            displayTable(table2, "table2");
+            displayTable(table3, "table3");
+        });
+
+        
+    </script>
+</body>
+</html>
